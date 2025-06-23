@@ -3,7 +3,7 @@
 #include "ListSequence.hpp"
 #include <stdexcept>
 
-// Неизменяемая последовательность на основе списка
+
 template<typename T>
 class ImmutableListSequence
   : public ListSequence<T, ImmutableListSequence<T>>
@@ -11,13 +11,13 @@ class ImmutableListSequence
     using Base = ListSequence<T, ImmutableListSequence<T>>;
 
 public:
-    using Base::Base;            // наследуем конструкторы
-    using Base::Append;          // раскрываем const-версию Append
-    using Base::Prepend;         // раскрываем const-версию Prepend
-    using Base::InsertAt;        // раскрываем const-версию InsertAt
-    using Base::Concat;          // раскрываем const-версию Concat
+    using Base::Base;            
+    using Base::Append;          
+    using Base::Prepend;       
+    using Base::InsertAt;       
+    using Base::Concat;        
 
-    // Блокируем мутабельные методы (non-const)
+    // Блокируем мутабельные методы 
     void Append(const T&) override            { throw std::logic_error("Immutable"); }
     void Prepend(const T&) override           { throw std::logic_error("Immutable"); }
     void InsertAt(const T&, std::size_t) override  { throw std::logic_error("Immutable"); }

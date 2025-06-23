@@ -6,14 +6,11 @@
 #include <utility>
 #include <functional>
 
-// Базовый класс для последовательностей, построенных на динамическом массиве.
-// CRTP: Derived укажет, какой конкретный класс-реализация (MutableArraySequence или ImmutableArraySequence).
 template<typename T, typename Derived>
 class ArraySequence : public Sequence<T> {
 protected:
-    DynamicArray<T> data_;  // внутреннее хранилище
+    DynamicArray<T> data_;  
 
-    // Вспомогательный шаблон для immutable-методов (клонировать + вызвать мутирующий метод)
     template<typename M, typename... Args>
     std::unique_ptr<Sequence<T>> cloneInvoke(M method, Args&&... args) const {
         auto cp = Clone();
@@ -46,7 +43,6 @@ public:
         if (l > r || r >= GetLength())
             throw std::out_of_range("ArraySequence::GetSubsequence: bad range");
         auto out = std::make_unique<Derived>();
-        // Копируем элементы от l до r включительно
         for (std::size_t i = l; i <= r; ++i) {
             out->Append(data_[i]);
         }
@@ -77,7 +73,6 @@ public:
 
     // --- Immutable API (через cloneInvoke) ---
     std::unique_ptr<Sequence<T>> Append(const T& v) const override {
-        // Явно приводим &Derived::Append к сигнатуре non-const mutator
         return cloneInvoke(static_cast<void (Derived::*)(const T&)>(&Derived::Append), v);
     }
     std::unique_ptr<Sequence<T>> Prepend(const T& v) const override {
@@ -87,7 +82,6 @@ public:
         return cloneInvoke(static_cast<void (Derived::*)(const T&, std::size_t)>(&Derived::InsertAt), v, idx);
     }
     std::unique_ptr<Sequence<T>> Concat(const Sequence<T>* other) const override {
-        // Здесь вручную клонируем и “поэлементно” вызываем mutable Append
         auto cp = Clone();
         for (std::size_t i = 0; i < other->GetLength(); ++i) {
             static_cast<Derived*>(cp.get())->Append(other->Get(i));

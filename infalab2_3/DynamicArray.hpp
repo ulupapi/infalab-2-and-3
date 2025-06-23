@@ -1,22 +1,19 @@
 #pragma once
 
-#include <cstddef>     // для std::size_t
-#include <stdexcept>   // для std::out_of_range
+#include <cstddef>    
+#include <stdexcept>  
 #include <initializer_list>
-#include <utility>     // для std::move
+#include <utility>    
 
-// Шаблон динамического массива (аналог std::vector)
 template<typename T>
 class DynamicArray {
 private:
-    T* data_;               // указатель на выделенную память
-    std::size_t size_;      // текущее число элементов
-
+    T* data_;              
+    std::size_t size_;    
 public:
     // --- Конструкторы и деструктор ---
     DynamicArray() : data_(nullptr), size_(0) {}
 
-    // Конструктор из сырого массива
     DynamicArray(const T* items, std::size_t count)
       : data_(new T[count]), size_(count)
     {
@@ -24,7 +21,6 @@ public:
             data_[i] = items[i];
     }
 
-    // Конструктор из initializer_list, например: {1,2,3}
     DynamicArray(std::initializer_list<T> init)
       : data_(new T[init.size()]), size_(init.size())
     {
@@ -33,7 +29,6 @@ public:
             data_[i++] = v;
     }
 
-    // Конструктор с заданным размером (все элементы default-инициализируются)
     explicit DynamicArray(std::size_t size)
       : data_(new T[size]), size_(size)
     {

@@ -8,7 +8,7 @@
 template<typename T, typename Derived>
 class ListSequence : public Sequence<T> {
 protected:
-    LinkedList<T> data_;  // внутренний односвязный список
+    LinkedList<T> data_;
 
     using SeqUPtr = typename Sequence<T>::SeqUPtr;
 
@@ -60,9 +60,9 @@ public:
         return new Derived();
     }
 
-    // -------------------
-    // Mutable API (non-const)
-    // -------------------
+
+    // Mutable API
+
     void Append(const T& v) override {
         data_.Append(v);
     }
@@ -79,9 +79,8 @@ public:
         return this;
     }
 
-    // -------------------
-    // Immutable API (non-const‐указатели, однозначно указываем на “не‐const” методы)
-    // -------------------
+ 
+    // Immutable API 
     SeqUPtr Append(const T& v) const override {
         return cloneInvoke(static_cast<void (Derived::*)(const T&)>(&Derived::Append), v);
     }

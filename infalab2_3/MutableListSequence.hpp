@@ -2,7 +2,7 @@
 
 #include "ListSequence.hpp"
 
-// Изменяемая последовательность на основе списка
+
 template<typename T>
 class MutableListSequence
   : public ListSequence<T, MutableListSequence<T>>

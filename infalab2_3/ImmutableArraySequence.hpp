@@ -3,7 +3,6 @@
 #include "ArraySequence.hpp"
 #include <stdexcept>
 
-// Неизменяемая версия ArraySequence: все mutable-методы заблокированы
 template<typename T>
 class ImmutableArraySequence
   : public ArraySequence<T, ImmutableArraySequence<T>>
@@ -12,13 +11,13 @@ class ImmutableArraySequence
 
 public:
     using SeqUPtr = typename Sequence<T>::SeqUPtr;
-    using Base::Base;           // наследуем конструкторы
-    using Base::Append;         // раскрываем const-версию Append из базового класса
-    using Base::Prepend;        // раскрываем const-версию Prepend
-    using Base::InsertAt;       // раскрываем const-версию InsertAt
-    using Base::Concat;         // раскрываем const-версию Concat
+    using Base::Base;          
+    using Base::Append;         
+    using Base::Prepend;      
+    using Base::InsertAt;     
+    using Base::Concat;         
 
-    // --- Блокируем мутабельные методы (non-const) ---
+    // --- Блокируем мутабельные методы ---
     void Append(const T&) override            { throw std::logic_error("Immutable"); }
     void Prepend(const T&) override           { throw std::logic_error("Immutable"); }
     void InsertAt(const T&, std::size_t) override  { throw std::logic_error("Immutable"); }

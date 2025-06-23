@@ -4,21 +4,21 @@
 #include <initializer_list>
 #include <cstddef>
 
-// Шаблон односвязного списка
+
 template<typename T>
 class LinkedList {
 public:
     // --- Вложенная структура узла ---
     struct Node {
-        T val;       // хранимое значение
-        Node* next;  // указатель на следующий узел
+        T val;      
+        Node* next; 
         explicit Node(const T& v) : val(v), next(nullptr) {}
     };
 
 private:
-    Node* head_{nullptr};      // указатель на первый узел
-    Node* tail_{nullptr};      // указатель на последний узел
-    std::size_t len_{0};       // текущее число элементов
+    Node* head_{nullptr};    
+    Node* tail_{nullptr};    
+    std::size_t len_{0};      
 
     // Утилитный метод очистки списка
     void clear() {
@@ -36,19 +36,16 @@ public:
     // --- Конструкторы / деструктор ---
     LinkedList() = default;
 
-    // Конструктор из массива: добавляем count элементов
     LinkedList(const T* items, std::size_t count) {
         for (std::size_t i = 0; i < count; ++i)
             Append(items[i]);
     }
 
-    // Конструктор из initializer_list (например: {a, b, c})
     LinkedList(const std::initializer_list<T>& init) {
         for (const T& v : init)
             Append(v);
     }
 
-    // Конструктор копирования: создаём новый список, копируя каждый узел
     LinkedList(const LinkedList& other) : LinkedList() {
         Node* cur = other.head_;
         while (cur) {
@@ -57,7 +54,6 @@ public:
         }
     }
 
-    // Оператор присваивания копированием
     LinkedList& operator=(const LinkedList& other) {
         if (this != &other) {
             clear();
@@ -141,8 +137,7 @@ public:
         ++len_;
     }
 
-    // Конкатенация: создаём новый список, в котором сначала копируем *this,
-    // затем добавляем все элементы other
+    
     LinkedList* Concat(const LinkedList* other) const {
         LinkedList* out = new LinkedList(*this);
         Node* cur = other->head_;
@@ -167,7 +162,6 @@ public:
         return Get(idx);
     }
 
-    // --- Геттер для head_ (нужен в ListSequence) ---
     Node* getHead() const {
         return head_;
     }

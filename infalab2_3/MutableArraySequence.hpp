@@ -4,23 +4,20 @@
 #include "DynamicArray.hpp"
 #include <stdexcept>
 
-// Изменяемая версия ArraySequence
 template<typename T>
 class MutableArraySequence
   : public ArraySequence<T, MutableArraySequence<T>>
 {
     using Base = ArraySequence<T, MutableArraySequence<T>>;
 public:
-    using Base::Base;  // наследуем конструкторы
+    using Base::Base;  
 
-    // --- Добавить в конец ---
     void Append(const T& v) override {
         auto n = this->GetLength();
         this->data_.Resize(n + 1);
         this->data_.Set(n, v);
     }
 
-    // --- Добавить в начало ---
     void Prepend(const T& v) override {
         auto n = this->GetLength();
         DynamicArray<T> tmp(n + 1);
@@ -30,7 +27,6 @@ public:
         this->data_ = std::move(tmp);
     }
 
-    // --- Вставка по индексу ---
     void InsertAt(const T& v, std::size_t idx) override {
         auto n = this->GetLength();
         if (idx > n) throw std::out_of_range("MutableArraySequence::InsertAt: bad idx");
@@ -43,7 +39,6 @@ public:
         this->data_ = std::move(tmp);
     }
 
-    // --- Мутабельная конкатенация ---
     Sequence<T>* Concat(Sequence<T>* other) override {
         for (std::size_t i = 0; i < other->GetLength(); ++i)
             Append(other->Get(i));

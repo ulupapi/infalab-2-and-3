@@ -7,7 +7,6 @@
 #include <utility>
 #include <algorithm>
 
-// --- Map ---
 template<typename T, typename U>
 typename Sequence<U>::SeqUPtr Map(
     const Sequence<T>& src,
@@ -20,7 +19,6 @@ typename Sequence<U>::SeqUPtr Map(
     return out;
 }
 
-// --- FlatMap ---
 template<typename T, typename U>
 typename Sequence<U>::SeqUPtr FlatMap(
     const Sequence<T>& src,
@@ -37,7 +35,6 @@ typename Sequence<U>::SeqUPtr FlatMap(
     return out;
 }
 
-// --- Where ---
 template<typename T>
 typename Sequence<T>::SeqUPtr Where(
     const Sequence<T>& src,
@@ -52,7 +49,6 @@ typename Sequence<T>::SeqUPtr Where(
     return out;
 }
 
-// --- Reduce ---
 template<typename T, typename U>
 U Reduce(
     const Sequence<T>& src,
@@ -66,7 +62,6 @@ U Reduce(
     return acc;
 }
 
-// --- Find / TryFind ---
 template<typename T>
 T Find(
     const Sequence<T>& src,
@@ -92,7 +87,6 @@ bool TryFind(
     return false;
 }
 
-// --- ContainsSubsequence ---
 template<typename T>
 bool ContainsSubsequence(
     const Sequence<T>& src,
@@ -110,7 +104,6 @@ bool ContainsSubsequence(
     return false;
 }
 
-// --- Zip / Unzip ---
 template<typename A, typename B>
 typename Sequence<std::pair<A,B>>::SeqUPtr Zip(
     const Sequence<A>& a,
@@ -140,7 +133,6 @@ std::pair<
     return {std::move(ua), std::move(ub)};
 }
 
-// --- Split: возвращает Sequence<Sequence<T>*> ---
 template<typename T>
 typename Sequence<Sequence<T>*>::SeqUPtr Split(
     const Sequence<T>& src,
@@ -163,7 +155,6 @@ typename Sequence<Sequence<T>*>::SeqUPtr Split(
     return out;
 }
 
-// --- Slice: удаляет cnt элементов с index и вставляет insert (если указан) ---
 template<typename T>
 typename Sequence<T>::SeqUPtr Slice(
     const Sequence<T>& src,
